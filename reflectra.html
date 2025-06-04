@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflectra - Emotional Intelligence Reflection App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        sage: '#9CAF88',
+                        warmGray: '#F5F5F0'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .reflection-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .prose-custom {
+            line-height: 1.7;
+        }
+        .prose-custom h1, .prose-custom h2, .prose-custom h3 {
+            color: inherit;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        .prose-custom p {
+            margin-bottom: 1em;
+        }
+        .prose-custom ul, .prose-custom ol {
+            margin: 1em 0;
+            padding-left: 1.5em;
+        }
+        .prose-custom li {
+            margin: 0.5em 0;
+        }
+        .prose-custom strong {
+            font-weight: 600;
+        }
+        .prose-custom em {
+            font-style: italic;
+        }
+        .typing-indicator {
+            display: inline-block;
+        }
+        .typing-indicator span {
+            display: inline-block;
+            background-color: #9CAF88;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen transition-colors duration-300">
+    <div class="container mx-auto px-4 py-6 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="reflection-gradient w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg">
+                <span class="text-white text-3xl">🌿</span>
+            </div>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Reflectra</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-400 font-light">Your compassionate companion for emotional reflection and growth</p>
+        </div>
+
+        <!-- Journal History Toggle -->
+        <div class="text-center mb-6">
+            <button id="historyToggle" class="hidden bg-sage/20 hover:bg-sage/30 text-sage px-4 py-2 rounded-full text-sm font-medium transition-all duration-200">
+                View Reflection Journey 📖
+            </button>
+        </div>
+
+        <!-- Journal History Panel -->
+        <div id="historyPanel" class="hidden bg-gradient-to-r from-sage/10 to-primary/10 rounded-2xl p-6 mb-8 border border-sage/20">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 flex items-center">
+                    <span class="mr-2">📖</span>
+                    Your Reflection Journey
+                </h3>
+                <button id="closeHistory" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+                    <span class="text-xl">×</span>
+                </button>
+            </div>
+            <div id="historyContent" class="space-y-4 max-h-64 overflow-y-auto"></div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-4 text-center">
+                Your reflection history is kept private and resets when you refresh the page
+            </p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Section -->
+            <div class="bg-warmGray dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-3">📓</span>
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Share Your Reflection</h2>
+                </div>
+                
+                <form id="reflectionForm" class="space-y-4">
+                    <div>
+                        <label for="reflectionInput" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            What's on your mind? How are you feeling today? 💭
+                        </label>
+                        <textarea 
+                            id="reflectionInput" 
+                            rows="6" 
+                            class="w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none transition-colors duration-200"
+                            placeholder="I feel off today... / I'm overwhelmed with work... / Something wonderful happened... / I'm struggling with..."
+                            required
+                        ></textarea>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button 
+                            type="submit" 
+                            id="submitBtn"
+                            class="flex-1 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Reflect with Me ✨
+                        </button>
+                        
+                        <button 
+                            type="button" 
+                            id="resetBtn"
+                            class="px-6 py-3 bg-sage hover:bg-sage/90 text-white rounded-xl font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                        >
+                            Reset 🌱
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Response Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center mb-4">
+                    <span class="text-2xl mr-3">💭</span>
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Reflectra's Insights</h2>
+                </div>
+                
+                <div id="responseContainer" class="min-h-[300px]">
+                    <div id="welcomeMessage" class="text-center py-12 text-gray-500 dark:text-gray-400">
+                        <div class="text-6xl mb-4">🌸</div>
+                        <p class="text-lg mb-2">Welcome to your reflection space</p>
+                        <p class="text-sm">Share what's in your heart, and I'll help you explore it with gentle wisdom</p>
+                    </div>
+                    
+                    <div id="loadingMessage" class="hidden text-center py-12">
+                        <div class="typing-indicator mb-4">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-400">Reflectra is listening and reflecting...</p>
+                    </div>
+                    
+                    <div id="responseContent" class="hidden prose-custom text-gray-700 dark:text-gray-300"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-12 text-sm text-gray-500 dark:text-gray-400">
+            <p>Reflectra is your companion for self-reflection, not a replacement for professional mental health support.</p>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode support
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+
+        // Elements
+        const form = document.getElementById('reflectionForm');
+        const input = document.getElementById('reflectionInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const responseContent = document.getElementById('responseContent');
+        const historyToggle = document.getElementById('historyToggle');
+        const historyPanel = document.getElementById('historyPanel');
+        const historyContent = document.getElementById('historyContent');
+        const closeHistory = document.getElementById('closeHistory');
+
+        // Session history storage
+        let reflectionHistory = [];
+
+        // Register handler for Reflectra responses
+        window.Poe.registerHandler("reflectra-handler", (result, context) => {
+            const msg = result.responses[0];
+            
+            if (msg.status === "error") {
+                showError("I'm having trouble connecting right now. Please try again in a moment. 🌿");
+                return;
+            }
+            
+            if (msg.status === "incomplete") {
+                // Update with streaming content
+                responseContent.innerHTML = marked.parse(msg.content);
+                showResponse();
+            } else if (msg.status === "complete") {
+                // Final content
+                responseContent.innerHTML = marked.parse(msg.content);
+                showResponse();
+                enableForm();
+                
+                // Add to history
+                addToHistory(context.userInput, msg.content);
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const userInput = input.value.trim();
+            if (!userInput) return;
+
+            // Check for reset command
+            if (userInput.toLowerCase() === 'reset') {
+                resetReflection();
+                return;
+            }
+
+            disableForm();
+            showLoading();
+
+            // Analyze emotional tone for adaptive response
+            const emotionalTone = analyzeEmotionalTone(userInput);
+            
+            const reflectraPrompt = `You are Reflectra, a wise and compassionate AI companion for emotional reflection and growth. Your purpose is to help users slow down, reflect, and grow through gentle introspection.
+
+When a user shares their thoughts or feelings, you should:
+
+1. **Emotional Recognition**: Acknowledge and validate their emotional state with empathy
+2. **Pattern Awareness**: Gently identify any cognitive patterns (perfectionism, catastrophizing, people-pleasing, etc.) without being clinical
+3. **Gentle Reframe**: Offer a compassionate CBT-style reframe, reflection prompt, or grounding activity
+4. **Creative Suggestions**: Provide personalized activities like "Write a letter to your future self" or "List 3 micro-wins from today"
+
+**Your tone should be**:
+- Wise, kind, and non-judgmental
+- Like a combination of a mood coach and journal buddy
+- Use creative metaphors and poetic language when appropriate
+- Include subtle emojis (🌿💭📓🌸✨) for warmth
+- NOT therapeutic or clinical, but supportive and insightful
+
+**IMPORTANT - Adapt your tone based on emotional context**:
+${emotionalTone === 'positive' ? 
+  '- The user seems to be sharing something positive or joyful. Match their energy with celebration and gentle encouragement to reflect on what brought this joy. Use uplifting metaphors and brighter emojis (✨🌟🌺). Help them savor and learn from positive moments.' :
+  emotionalTone === 'struggling' ? 
+  '- The user appears to be struggling or in distress. Use extra gentleness, validation, and hope. Offer comfort like a warm embrace. Use softer emojis (🌿🫂💙). Focus on small steps and self-compassion.' :
+  '- The user seems reflective or neutral. Use balanced wisdom and gentle curiosity. Help them explore their thoughts with mindful questions and grounding activities.'}
+
+**Format your response in Markdown** with:
+- Headers for organization
+- Bullet points for clarity
+- Emphasis for key insights
+- Beautiful, readable structure
+
+**Current user reflection**: "${userInput}"
+
+Please respond as Reflectra with gentle wisdom and personalized insights.`;
+
+            try {
+                await window.Poe.sendUserMessage(`@Claude-3.7-Sonnet ${reflectraPrompt}`, {
+                    handler: "reflectra-handler",
+                    stream: true,
+                    openChat: false,
+                    handlerContext: { userInput: userInput }
+                });
+            } catch (err) {
+                console.error("Error:", err);
+                showError("I'm having trouble connecting right now. Please try again in a moment. 🌿");
+                enableForm();
+            }
+        });
+
+        // Reset functionality
+        resetBtn.addEventListener('click', resetReflection);
+
+        function resetReflection() {
+            input.value = '';
+            showWelcome();
+            enableForm();
+            input.focus();
+        }
+
+        function disableForm() {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Reflecting...";
+            input.disabled = true;
+        }
+
+        function enableForm() {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Reflect with Me ✨";
+            input.disabled = false;
+        }
+
+        function showLoading() {
+            welcomeMessage.classList.add('hidden');
+            responseContent.classList.add('hidden');
+            loadingMessage.classList.remove('hidden');
+        }
+
+        function showResponse() {
+            welcomeMessage.classList.add('hidden');
+            loadingMessage.classList.add('hidden');
+            responseContent.classList.remove('hidden');
+        }
+
+        function showWelcome() {
+            responseContent.classList.add('hidden');
+            loadingMessage.classList.add('hidden');
+            welcomeMessage.classList.remove('hidden');
+        }
+
+        function showError(message) {
+            responseContent.innerHTML = `<div class="text-center py-8 text-gray-600 dark:text-gray-400">
+                <div class="text-4xl mb-4">🌿</div>
+                <p>${message}</p>
+            </div>`;
+            showResponse();
+            enableForm();
+        }
+
+        // Auto-resize textarea
+        input.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+
+        // Emotional tone analysis
+        function analyzeEmotionalTone(text) {
+            const lowerText = text.toLowerCase();
+            
+            // Positive indicators
+            const positiveWords = ['happy', 'excited', 'grateful', 'wonderful', 'amazing', 'joy', 'love', 'celebrating', 'accomplished', 'proud', 'blessed', 'thrilled', 'fantastic', 'great news', 'breakthrough'];
+            const positivePatterns = /\b(feel(ing)? great|so happy|really excited|went well|good news|amazing day|feeling blessed)\b/g;
+            
+            // Struggling indicators  
+            const strugglingWords = ['overwhelmed', 'anxious', 'depressed', 'struggling', 'exhausted', 'burnt out', 'stressed', 'worried', 'confused', 'lost', 'helpless', 'frustrated', 'defeated', 'broken', 'terrible'];
+            const strugglingPatterns = /\b(can't handle|feel(ing)? awful|so tired|really hard|don't know what|feel(ing)? lost|breaking down)\b/g;
+            
+            // Count matches
+            const positiveCount = positiveWords.filter(word => lowerText.includes(word)).length + 
+                                (lowerText.match(positivePatterns) || []).length;
+            const strugglingCount = strugglingWords.filter(word => lowerText.includes(word)).length + 
+                                  (lowerText.match(strugglingPatterns) || []).length;
+            
+            if (positiveCount > strugglingCount && positiveCount > 0) {
+                return 'positive';
+            } else if (strugglingCount > positiveCount && strugglingCount > 0) {
+                return 'struggling';
+            } else {
+                return 'neutral';
+            }
+        }
+
+        // History management
+        function addToHistory(userInput, aiResponse) {
+            const timestamp = new Date().toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            
+            reflectionHistory.unshift({
+                timestamp,
+                userInput: userInput.substring(0, 100) + (userInput.length > 100 ? '...' : ''),
+                aiResponse: aiResponse.substring(0, 200) + (aiResponse.length > 200 ? '...' : ''),
+                fullUserInput: userInput,
+                fullAiResponse: aiResponse
+            });
+            
+            // Keep only last 10 entries
+            if (reflectionHistory.length > 10) {
+                reflectionHistory = reflectionHistory.slice(0, 10);
+            }
+            
+            updateHistoryDisplay();
+            showHistoryToggle();
+        }
+
+        function updateHistoryDisplay() {
+            historyContent.innerHTML = reflectionHistory.map(entry => `
+                <div class="bg-white/50 dark:bg-gray-700/50 rounded-lg p-4 border-l-4 border-sage/30">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">${entry.timestamp}</div>
+                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        "${entry.userInput}"
+                    </div>
+                    <div class="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+                        ${entry.aiResponse.replace(/[#*`]/g, '')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showHistoryToggle() {
+            if (reflectionHistory.length > 0) {
+                historyToggle.classList.remove('hidden');
+            }
+        }
+
+        // History panel event listeners
+        historyToggle.addEventListener('click', () => {
+            historyPanel.classList.toggle('hidden');
+        });
+
+        closeHistory.addEventListener('click', () => {
+            historyPanel.classList.add('hidden');
+        });
+
+        // Focus on input when page loads
+        input.focus();
+    </script>
+</body>
+</html>
