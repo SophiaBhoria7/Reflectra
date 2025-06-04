@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yourdomain.com/schemas/reflectra.schema.json",
+  "title": "ReflectraJournalSchema",
+  "description": "Schema for Reflectra emotional reflection journaling app state and data",
+  "type": "object",
+  "properties": {
+    "currentReflection": {
+      "type": "object",
+      "description": "Current reflection session data",
+      "properties": {
+        "userInput": {
+          "type": "string",
+          "description": "The journal entry input by the user",
+          "minLength": 1
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the entry was created"
+        },
+        "emotionalTone": {
+          "type": "string",
+          "enum": ["positive", "struggling", "neutral"],
+          "description": "Detected emotional tone of the user input"
+        },
+        "aiResponse": {
+          "type": "string",
+          "description": "AI-generated reflective response based on user input"
+        }
+      },
+      "required": ["userInput", "timestamp", "emotionalTone", "aiResponse"],
+      "additionalProperties": false
+    },
+    "reflectionHistory": {
+      "type": "array",
+      "description": "Array of past reflection entries",
+      "items": {
+        "type": "object",
+        "properties": {
+          "userInput": {
+            "type": "string",
+            "minLength": 1
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "emotionalTone": {
+            "type": "string",
+            "enum": ["positive", "struggling", "neutral"]
+          },
+          "aiResponse": {
+            "type": "string"
+          }
+        },
+        "required": ["userInput", "timestamp", "emotionalTone", "aiResponse"],
+        "additionalProperties": false
+      },
+      "minItems": 0
+    },
+    "userSettings": {
+      "type": "object",
+      "description": "User customization and preferences",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark"],
+          "default": "light",
+          "description": "UI theme preference"
+        },
+        "dailyReminder": {
+          "type": "boolean",
+          "description": "Whether the user wants daily journaling reminders"
+        },
+        "reminderTime": {
+          "type": "string",
+          "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+          "description": "Time of day for daily reminder in 24-hour HH:mm format"
+        }
+      },
+      "required": ["theme"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["currentReflection", "reflectionHistory", "userSettings"],
+  "additionalProperties": false
+}
