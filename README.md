@@ -4,7 +4,7 @@ Reflectra is a compassionate AI companion designed to help you process your thou
 
 ---
 
-## 🌿 Features
+## Features
 
 * **Gentle AI Reflections**: Powered by Claude-3, Reflectra listens to your thoughts and responds with empathetic insights, emotional validation, and grounding activities.
 * **Markdown Support**: Utilize Markdown formatting for structured and expressive journaling.
@@ -15,7 +15,7 @@ Reflectra is a compassionate AI companion designed to help you process your thou
 
 ---
 
-## 🛠️ Installation & Usage
+## Installation & Usage
 
 1. **Clone the Repository**:
 
@@ -35,7 +35,7 @@ Reflectra is a compassionate AI companion designed to help you process your thou
 
 ---
 
-## 🎨 Customization
+## Customization
 
 Reflectra is built with Tailwind CSS and offers several customization options:
 
@@ -45,7 +45,7 @@ Reflectra is built with Tailwind CSS and offers several customization options:
 
 ---
 
-## 🧠 How It Works
+## How It Works
 
 Reflectra uses a structured prompt to guide its responses:
 
@@ -63,7 +63,7 @@ When a user shares their thoughts or feelings, you should:
 - Wise, kind, and non-judgmental.
 - Like a combination of a mood coach and journal buddy.
 - Use creative metaphors and poetic language when appropriate.
-- Include subtle emojis (🌿💭📓🌸✨) for warmth.
+- Include subtle emojis for warmth.
 - NOT therapeutic or clinical, but supportive and insightful.
 
 **Current user reflection**: "${userInput}"
@@ -73,7 +73,7 @@ Please respond as Reflectra with gentle wisdom and personalized insights.
 
 ---
 
-## 🧩 Emotional Tone Analysis
+## Emotional Tone Analysis
 
 Reflectra analyzes the emotional tone of your input to tailor its responses:
 
@@ -83,7 +83,7 @@ Reflectra analyzes the emotional tone of your input to tailor its responses:
 
 ---
 
-## 🧾 Reflection History
+## Reflection History
 
 Your reflection history is stored in the session and can be accessed by clicking the "View Reflection Journey 📖" button. This allows you to:
 
@@ -92,7 +92,7 @@ Your reflection history is stored in the session and can be accessed by clicking
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
