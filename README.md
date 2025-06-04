@@ -85,7 +85,7 @@ Reflectra analyzes the emotional tone of your input to tailor its responses:
 
 ## Reflection History
 
-Your reflection history is stored in the session and can be accessed by clicking the "View Reflection Journey" button. This allows you to:
+Your reflection history is stored in the session and can be accessed by clicking the "View Reflection Journey 📖" button. This allows you to:
 
 * **Review Past Entries**: Read through your previous reflections.
 * **Privacy**: Your history is private and resets when you refresh the page.
