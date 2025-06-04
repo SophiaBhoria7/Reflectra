@@ -39,7 +39,7 @@ Reflectra is a compassionate AI companion designed to help you process your thou
 
 Reflectra is built with Tailwind CSS and offers several customization options:
 
-* **Color Palette**: Modify the primary, sage, and warmGray colors in the Tailwind configuration to match your desired theme.
+* **Color Palette**: Modify the primary, sage, and warm-gray colors in the Tailwind configuration to match your desired theme.
 * **Typography**: The default font is Inter. To change, update the `fontFamily` in the Tailwind configuration.
 * **Reflection Gradient**: Adjust the `reflection-gradient` class to change the background gradient of the header.
 
