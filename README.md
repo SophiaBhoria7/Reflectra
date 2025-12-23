@@ -7,7 +7,7 @@ Reflectra is a compassionate AI companion designed to help you process your thou
 ## Features
 
 * **Gentle AI Reflections**: Powered by Claude-3, Reflectra listens to your thoughts and responds with empathetic insights, emotional validation, and grounding activities.
-* **Markdown Support**: Utilize Markdown formatting for structured and expressive journaling.
+* **Markdown Support**: Utilized Markdown formatting for structured and expressive journaling.
 * **Emotional Tone Analysis**: Reflectra adapts its responses based on the emotional tone of your input, offering tailored support.
 * **Reflection History**: View your past reflections in a private, session-based history panel.
 * **Dark Mode**: Enjoy a serene and distraction-free writing experience with a soothing dark theme.
